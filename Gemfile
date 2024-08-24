@@ -7,7 +7,9 @@ ruby '3.3.1'
 gem 'rails', '~> 7.1.4'
 
 gem 'bootsnap', '~> 1.17'
+gem 'jsonapi-serializer'
 gem 'oj', '~> 3.16'
+gem 'pagy', '~> 9.0'
 gem 'pg', '~> 1.5'
 gem 'puma', '~> 6.4'
 gem 'rack-cors', '~> 2.0'
@@ -19,6 +21,7 @@ group :development, :test do
   gem 'dotenv-rails', '~> 3.1.2'
   gem 'factory_bot_rails', '~> 6.4'
   gem 'faker', '~> 3.4'
+  gem 'knapsack', '~> 4.0'
   gem 'pry-byebug', '~> 3.9', platform: :mri
   gem 'pry-rails', '~> 0.3.9'
   gem 'rspec-rails', '~> 6.1'
@@ -42,7 +45,6 @@ end
 
 group :test do
   gem 'faraday-retry', '~> 2.2'
-  gem 'knapsack', '~> 4.0'
   gem 'octokit', '~> 9.1'
   gem 'parallel_tests', '~> 4.7'
   gem 'pg_query', '~> 5.1.0'

@@ -28,4 +28,17 @@
 #       enabled: "ON"
 
 en:
-  hello: "Hello world"
+  errors:
+    resource_not_found: 'Resource not found'
+    request_missing_parameters: 'Request is missing required parameters' 
+  activerecord:
+    errors:
+      models:
+        geolocation:
+          ip_or_host_must_be_present: 'Either IP or host must be present'
+          attributes:
+            ip:
+              must_be_valid_format: 'must be a valid IPv4 or IPv6 address'
+            host:
+              must_be_valid_format: 'must be a valid URL'
+        
