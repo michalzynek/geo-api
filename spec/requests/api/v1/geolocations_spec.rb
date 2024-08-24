@@ -52,8 +52,9 @@ RSpec.describe 'Geolocations' do
     end
 
     context 'when geolocation record exists' do
-      let(:geolocation) { create(:geolocation, :ipstack) }
       subject { get api_v1_geolocation_path(geolocation.id) }
+
+      let(:geolocation) { create(:geolocation, :ipstack) }
       let(:response_body) { json[:data] }
 
       it 'returns successfully single resource' do
@@ -76,8 +77,9 @@ RSpec.describe 'Geolocations' do
     end
 
     context 'when geolocation record exists' do
-      let(:geolocation) { create(:geolocation, :ipstack) }
       subject { delete api_v1_geolocation_path(geolocation.id) }
+
+      let(:geolocation) { create(:geolocation, :ipstack) }
 
       it 'returns no content and destroys geolocation' do
         expect(response).to have_http_status(:no_content)
@@ -87,9 +89,10 @@ RSpec.describe 'Geolocations' do
   end
 
   describe 'POST api/v1/geolocations' do
+    subject { post api_v1_geolocations_path, params: }
+
     before { subject }
 
-    subject { post api_v1_geolocations_path, params: }
     let(:params) do
       {
         geolocation: {
