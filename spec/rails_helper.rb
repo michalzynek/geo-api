@@ -40,9 +40,6 @@ RSpec.configure do |config|
     metadata[:openapi] = false unless metadata[:file_path].match?(Regexp.new('/spec/requests/api/'))
   end
 
-  # config.include Shoulda::Matchers::ActiveModel, type: :form
-  # config.include Shoulda::Matchers::ActiveRecord, type: :form
-
   # Detects N+1 queries
   config.before do |example|
     Prosopite.scan unless example.metadata.try(:[], :skip_prosopite_scan)
