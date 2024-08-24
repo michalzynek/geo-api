@@ -1,0 +1,32 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - 3000:3000
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_HOST: db
+      BINDING: 0.0.0.0
+    tty: true
+    stdin_open: true
+    develop:
+      watch:
+        - action: rebuild
+          path: Gemfile
+    depends_on:
+      - db
+    links:
+      - db:db
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+volumes:
+  db_data:
