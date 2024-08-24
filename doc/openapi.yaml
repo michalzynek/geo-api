@@ -10,9 +10,16 @@ paths:
       summary: index
       tags:
       - API::V1::Geolocation
+      parameters:
+      - name: query
+        in: query
+        required: false
+        schema:
+          type: string
+        example: 231.28.67.96
       responses:
         '200':
-          description: returns successfully list of resources
+          description: returns paginated results with links
           content:
             application/json:
               schema:
@@ -74,56 +81,56 @@ paths:
                 - links
               example:
                 data:
-                - id: '1860'
+                - id: '21'
                   type: geolocation
                   attributes:
-                    ip: 239.230.38.102
-                    country: Congo
-                    city: Hermanside
-                    latitude: "-64.90517224909418"
-                    longitude: '48.15037971838978'
+                    ip: 231.28.67.96
+                    country: El Salvador
+                    city: Arlaville
+                    latitude: "-15.21975770895643"
+                    longitude: '63.13580786672378'
                     provider: IPSTACK
-                - id: '1861'
+                - id: '22'
                   type: geolocation
                   attributes:
-                    ip: 239.230.38.102
-                    country: Gibraltar
-                    city: Noblefurt
-                    latitude: "-49.1820843522777"
-                    longitude: '92.95466842962992'
+                    ip: 231.28.67.96
+                    country: Malawi
+                    city: Port Jaime
+                    latitude: '51.76247304797252'
+                    longitude: "-31.0717696455967"
                     provider: IPSTACK
-                - id: '1862'
+                - id: '23'
                   type: geolocation
                   attributes:
-                    ip: 239.230.38.102
-                    country: Bulgaria
-                    city: North Lashaunda
-                    latitude: '36.62608032994554'
-                    longitude: "-5.82792100468879"
+                    ip: 231.28.67.96
+                    country: Jersey
+                    city: West Berenicetown
+                    latitude: '59.99240907435043'
+                    longitude: "-77.99791669884813"
                     provider: IPSTACK
-                - id: '1863'
+                - id: '24'
                   type: geolocation
                   attributes:
-                    ip: 239.230.38.102
-                    country: Montserrat
-                    city: South Jonas
-                    latitude: '35.43090035425203'
-                    longitude: '88.55592446386055'
+                    ip: 231.28.67.96
+                    country: Mauritania
+                    city: New Bill
+                    latitude: '11.86838187625267'
+                    longitude: "-114.4397432042485"
                     provider: IPSTACK
-                - id: '1864'
+                - id: '25'
                   type: geolocation
                   attributes:
-                    ip: 239.230.38.102
-                    country: British Indian Ocean Territory (Chagos Archipelago)
-                    city: Port Luigimouth
-                    latitude: '6.185930703638192'
-                    longitude: "-97.95336149222078"
+                    ip: 231.28.67.96
+                    country: New Caledonia
+                    city: Lake Leonie
+                    latitude: '9.027420424529282'
+                    longitude: "-29.49924303724734"
                     provider: IPSTACK
                 links:
-                  first: "/api/v1/geolocations?query=239.230.38.102&page%5Bpage%5D=1&page%5Blimit%5D=5"
-                  last: "/api/v1/geolocations?query=239.230.38.102&page%5Bpage%5D=2&page%5Blimit%5D=5"
-                  prev:
-                  next: "/api/v1/geolocations?query=239.230.38.102&page%5Bpage%5D=2&page%5Blimit%5D=5"
+                  first: "/api/v1/geolocations?query=231.28.67.96&page%5Bpage%5D=1&page%5Blimit%5D=5"
+                  last: "/api/v1/geolocations?query=231.28.67.96&page%5Bpage%5D=2&page%5Blimit%5D=5"
+                  prev: 
+                  next: "/api/v1/geolocations?query=231.28.67.96&page%5Bpage%5D=2&page%5Blimit%5D=5"
         '400':
           description: returns 400 bad request
           content:
@@ -140,51 +147,10 @@ paths:
               example:
                 errors:
                 - Query parameter is required (should be IP or Host)
-      parameters:
-      - name: query
-        in: query
-        required: false
-        schema:
-          type: string
-        example: 239.230.38.102
     post:
       summary: create
       tags:
       - API::V1::Geolocation
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                geolocation:
-                  type: object
-                  properties:
-                    ip:
-                      type: string
-                    country:
-                      type: string
-                    city:
-                      type: string
-                    latitude:
-                      type: string
-                    longitude:
-                      type: string
-                  required:
-                  - ip
-                  - country
-                  - city
-                  - latitude
-                  - longitude
-              required:
-              - geolocation
-            example:
-              geolocation:
-                ip: 155.191.254.127
-                country: Ecuador
-                city: Marlinmouth
-                latitude: "-61.758846756777444"
-                longitude: "-151.49116325031417"
       responses:
         '201':
           description: returns success and creates new geolocation
@@ -230,15 +196,15 @@ paths:
                 - data
               example:
                 data:
-                  id: '1849'
+                  id: '32'
                   type: geolocation
                   attributes:
-                    ip: 155.191.254.127
-                    country: Ecuador
-                    city: Marlinmouth
-                    latitude: "-61.758846756777444"
-                    longitude: "-151.49116325031417"
-                    provider:
+                    ip: 80.104.110.90
+                    country: Poland
+                    city: Pollichburgh
+                    latitude: '22.27435572213743'
+                    longitude: '134.48079282443842'
+                    provider: 
         '400':
           description: returns unprocessable entity
           content:
@@ -263,6 +229,40 @@ paths:
                 errors:
                 - ip:
                   - must be a valid IPv4 or IPv6 address
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                geolocation:
+                  type: object
+                  properties:
+                    ip:
+                      type: string
+                    country:
+                      type: string
+                    city:
+                      type: string
+                    latitude:
+                      type: string
+                    longitude:
+                      type: string
+                  required:
+                  - ip
+                  - country
+                  - city
+                  - latitude
+                  - longitude
+              required:
+              - geolocation
+            example:
+              geolocation:
+                ip: 80.104.110.90
+                country: Poland
+                city: Pollichburgh
+                latitude: '22.27435572213743'
+                longitude: '134.48079282443842'
   "/api/v1/geolocations/{id}":
     delete:
       summary: destroy
@@ -273,8 +273,15 @@ paths:
         in: path
         required: true
         schema:
-          type: integer
-        example: 1880
+          type: string
+        example: dummy
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties: {}
+            example: {}
       responses:
         '204':
           description: returns no content and destroys geolocation
@@ -299,13 +306,6 @@ paths:
               example:
                 errors:
                 - message: Resource not found
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties: {}
-            example: {}
     get:
       summary: show
       tags:
@@ -362,14 +362,14 @@ paths:
                 - data
               example:
                 data:
-                  id: '1848'
+                  id: '31'
                   type: geolocation
                   attributes:
-                    ip: 94.178.80.160
-                    country: British Indian Ocean Territory (Chagos Archipelago)
-                    city: South Genefort
-                    latitude: "-59.77093823525846"
-                    longitude: "-157.7997678004237"
+                    ip: 254.97.70.161
+                    country: Germany
+                    city: Lake Kathaleen
+                    latitude: "-56.92788412635468"
+                    longitude: '99.16909617861234'
                     provider: IPSTACK
         '404':
           description: returns 404 not found
