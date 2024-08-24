@@ -1,0 +1,394 @@
+---
+openapi: 3.0.3
+info:
+  title: geo-api
+  version: 1.0.0
+servers: []
+paths:
+  "/api/v1/geolocations":
+    get:
+      summary: index
+      tags:
+      - API::V1::Geolocation
+      responses:
+        '200':
+          description: returns successfully list of resources
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        type:
+                          type: string
+                        attributes:
+                          type: object
+                          properties:
+                            ip:
+                              type: string
+                            country:
+                              type: string
+                            city:
+                              type: string
+                            latitude:
+                              type: string
+                            longitude:
+                              type: string
+                            provider:
+                              type: string
+                          required:
+                          - ip
+                          - country
+                          - city
+                          - latitude
+                          - longitude
+                          - provider
+                      required:
+                      - id
+                      - type
+                      - attributes
+                  links:
+                    type: object
+                    properties:
+                      first:
+                        type: string
+                      last:
+                        type: string
+                      prev:
+                        nullable: true
+                      next:
+                        type: string
+                    required:
+                    - first
+                    - last
+                    - prev
+                    - next
+                required:
+                - data
+                - links
+              example:
+                data:
+                - id: '1860'
+                  type: geolocation
+                  attributes:
+                    ip: 239.230.38.102
+                    country: Congo
+                    city: Hermanside
+                    latitude: "-64.90517224909418"
+                    longitude: '48.15037971838978'
+                    provider: IPSTACK
+                - id: '1861'
+                  type: geolocation
+                  attributes:
+                    ip: 239.230.38.102
+                    country: Gibraltar
+                    city: Noblefurt
+                    latitude: "-49.1820843522777"
+                    longitude: '92.95466842962992'
+                    provider: IPSTACK
+                - id: '1862'
+                  type: geolocation
+                  attributes:
+                    ip: 239.230.38.102
+                    country: Bulgaria
+                    city: North Lashaunda
+                    latitude: '36.62608032994554'
+                    longitude: "-5.82792100468879"
+                    provider: IPSTACK
+                - id: '1863'
+                  type: geolocation
+                  attributes:
+                    ip: 239.230.38.102
+                    country: Montserrat
+                    city: South Jonas
+                    latitude: '35.43090035425203'
+                    longitude: '88.55592446386055'
+                    provider: IPSTACK
+                - id: '1864'
+                  type: geolocation
+                  attributes:
+                    ip: 239.230.38.102
+                    country: British Indian Ocean Territory (Chagos Archipelago)
+                    city: Port Luigimouth
+                    latitude: '6.185930703638192'
+                    longitude: "-97.95336149222078"
+                    provider: IPSTACK
+                links:
+                  first: "/api/v1/geolocations?query=239.230.38.102&page%5Bpage%5D=1&page%5Blimit%5D=5"
+                  last: "/api/v1/geolocations?query=239.230.38.102&page%5Bpage%5D=2&page%5Blimit%5D=5"
+                  prev:
+                  next: "/api/v1/geolocations?query=239.230.38.102&page%5Bpage%5D=2&page%5Blimit%5D=5"
+        '400':
+          description: returns 400 bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: string
+                required:
+                - errors
+              example:
+                errors:
+                - Query parameter is required (should be IP or Host)
+      parameters:
+      - name: query
+        in: query
+        required: false
+        schema:
+          type: string
+        example: 239.230.38.102
+    post:
+      summary: create
+      tags:
+      - API::V1::Geolocation
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                geolocation:
+                  type: object
+                  properties:
+                    ip:
+                      type: string
+                    country:
+                      type: string
+                    city:
+                      type: string
+                    latitude:
+                      type: string
+                    longitude:
+                      type: string
+                  required:
+                  - ip
+                  - country
+                  - city
+                  - latitude
+                  - longitude
+              required:
+              - geolocation
+            example:
+              geolocation:
+                ip: 155.191.254.127
+                country: Ecuador
+                city: Marlinmouth
+                latitude: "-61.758846756777444"
+                longitude: "-151.49116325031417"
+      responses:
+        '201':
+          description: returns success and creates new geolocation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      type:
+                        type: string
+                      attributes:
+                        type: object
+                        properties:
+                          ip:
+                            type: string
+                          country:
+                            type: string
+                          city:
+                            type: string
+                          latitude:
+                            type: string
+                          longitude:
+                            type: string
+                          provider:
+                            nullable: true
+                        required:
+                        - ip
+                        - country
+                        - city
+                        - latitude
+                        - longitude
+                        - provider
+                    required:
+                    - id
+                    - type
+                    - attributes
+                required:
+                - data
+              example:
+                data:
+                  id: '1849'
+                  type: geolocation
+                  attributes:
+                    ip: 155.191.254.127
+                    country: Ecuador
+                    city: Marlinmouth
+                    latitude: "-61.758846756777444"
+                    longitude: "-151.49116325031417"
+                    provider:
+        '400':
+          description: returns unprocessable entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        ip:
+                          type: array
+                          items:
+                            type: string
+                      required:
+                      - ip
+                required:
+                - errors
+              example:
+                errors:
+                - ip:
+                  - must be a valid IPv4 or IPv6 address
+  "/api/v1/geolocations/{id}":
+    delete:
+      summary: destroy
+      tags:
+      - API::V1::Geolocation
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 1880
+      responses:
+        '204':
+          description: returns no content and destroys geolocation
+        '404':
+          description: returns 404 not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+                      required:
+                      - message
+                required:
+                - errors
+              example:
+                errors:
+                - message: Resource not found
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties: {}
+            example: {}
+    get:
+      summary: show
+      tags:
+      - API::V1::Geolocation
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        example: dummy
+      responses:
+        '200':
+          description: returns successfully single resource
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      type:
+                        type: string
+                      attributes:
+                        type: object
+                        properties:
+                          ip:
+                            type: string
+                          country:
+                            type: string
+                          city:
+                            type: string
+                          latitude:
+                            type: string
+                          longitude:
+                            type: string
+                          provider:
+                            type: string
+                        required:
+                        - ip
+                        - country
+                        - city
+                        - latitude
+                        - longitude
+                        - provider
+                    required:
+                    - id
+                    - type
+                    - attributes
+                required:
+                - data
+              example:
+                data:
+                  id: '1848'
+                  type: geolocation
+                  attributes:
+                    ip: 94.178.80.160
+                    country: British Indian Ocean Territory (Chagos Archipelago)
+                    city: South Genefort
+                    latitude: "-59.77093823525846"
+                    longitude: "-157.7997678004237"
+                    provider: IPSTACK
+        '404':
+          description: returns 404 not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+                      required:
+                      - message
+                required:
+                - errors
+              example:
+                errors:
+                - message: Resource not found

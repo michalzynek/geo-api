@@ -4,11 +4,11 @@ require 'rails_helper'
 
 RSpec.describe 'Geolocations' do
   describe 'GET api/v1/geolocations' do
-    let(:request) { get api_v1_geolocations_path, params: }
+    subject { get api_v1_geolocations_path, params: }
 
     before do
       create_list(:geolocation, 10, :ipstack, ip: Faker::Internet.ip_v4_address)
-      request
+      subject
     end
 
     context 'when search params are present' do
@@ -41,10 +41,10 @@ RSpec.describe 'Geolocations' do
   end
 
   describe 'GET api/v1/geolocations/:id' do
-    before { request }
+    before { subject }
 
     context 'when geolocation record does not exist' do
-      let(:request) { get api_v1_geolocation_path('dummy') }
+      subject { get api_v1_geolocation_path('dummy') }
 
       it 'returns 404 not found' do
         expect(response).to have_http_status(:not_found)
@@ -53,7 +53,7 @@ RSpec.describe 'Geolocations' do
 
     context 'when geolocation record exists' do
       let(:geolocation) { create(:geolocation, :ipstack) }
-      let(:request) { get api_v1_geolocation_path(geolocation.id) }
+      subject { get api_v1_geolocation_path(geolocation.id) }
       let(:response_body) { json[:data] }
 
       it 'returns successfully single resource' do
@@ -65,10 +65,10 @@ RSpec.describe 'Geolocations' do
   end
 
   describe 'DELETE api/v1/geolocations/:id' do
-    before { request }
+    before { subject }
 
     context 'when geolocation record does not exist' do
-      let(:request) { delete api_v1_geolocation_path('dummy') }
+      subject { delete api_v1_geolocation_path('dummy') }
 
       it 'returns 404 not found' do
         expect(response).to have_http_status(:not_found)
@@ -77,7 +77,7 @@ RSpec.describe 'Geolocations' do
 
     context 'when geolocation record exists' do
       let(:geolocation) { create(:geolocation, :ipstack) }
-      let(:request) { delete api_v1_geolocation_path(geolocation.id) }
+      subject { delete api_v1_geolocation_path(geolocation.id) }
 
       it 'returns no content and destroys geolocation' do
         expect(response).to have_http_status(:no_content)
@@ -87,9 +87,9 @@ RSpec.describe 'Geolocations' do
   end
 
   describe 'POST api/v1/geolocations' do
-    before { request }
+    before { subject }
 
-    let(:request) { post api_v1_geolocations_path, params: }
+    subject { post api_v1_geolocations_path, params: }
     let(:params) do
       {
         geolocation: {

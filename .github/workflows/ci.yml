@@ -103,11 +103,6 @@ jobs:
         uses: rootstrap/check_untracked_changes@v1
         with:
           path: "./app/ ./spec/"
-      - name: Upload partial coverage
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage
-          path: "coverage/coverage.${{ matrix.ci_node_index }}.json"
       - name: Merge API Docs from threads
         env:
           CI_NODE_INDEX: ${{ matrix.ci_node_index }}
@@ -136,12 +131,6 @@ jobs:
           if [ $(git diff ${{ github.event.before }} ${{ github.event.after }} --name-only | grep 'spec/requests/api' | wc -l) -gt 0 ]; then
             echo "OPENAPI=true" >> $GITHUB_ENV
           fi
-
-      - name: Download coverage reports
-        uses: actions/download-artifact@v4
-        with:
-          name: coverage
-          path: coverage/coverage.*.json
 
       - name: Setup Ruby
         if: ${{ env.OPENAPI }}
