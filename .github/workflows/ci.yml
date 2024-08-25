@@ -17,6 +17,7 @@ env:
   REPO: ${{ github.repository }}
   PARALLEL_TEST_FIRST_IS_1: true
   IPSTACK_ACCESS_KEY: ipstack_api_key
+  HMAC_SECRET_KEY: super-secret
 
 jobs:
   linters:

@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Geolocations' do
   describe 'GET api/v1/geolocations' do
-    subject { get api_v1_geolocations_path, params: }
+    subject { get api_v1_geolocations_path, params:, headers: auth_headers }
 
     before do
       create_list(:geolocation, 10, :ipstack)
@@ -52,7 +52,7 @@ RSpec.describe 'Geolocations' do
     before { subject }
 
     context 'when geolocation record does not exist' do
-      subject { get api_v1_geolocation_path('dummy') }
+      subject { get api_v1_geolocation_path('dummy'), headers: auth_headers, as: :json }
 
       it 'returns 404 not found' do
         expect(response).to have_http_status(:not_found)
@@ -60,7 +60,7 @@ RSpec.describe 'Geolocations' do
     end
 
     context 'when geolocation record exists' do
-      subject { get api_v1_geolocation_path(geolocation.id) }
+      subject { get api_v1_geolocation_path(geolocation.id), headers: auth_headers, as: :json }
 
       let(:geolocation) { create(:geolocation, :ipstack) }
       let(:response_body) { json[:data] }
@@ -77,7 +77,7 @@ RSpec.describe 'Geolocations' do
     before { subject }
 
     context 'when geolocation record does not exist' do
-      subject { delete api_v1_geolocation_path('dummy') }
+      subject { delete api_v1_geolocation_path('dummy'), headers: auth_headers, as: :json }
 
       it 'returns 404 not found' do
         expect(response).to have_http_status(:not_found)
@@ -85,7 +85,7 @@ RSpec.describe 'Geolocations' do
     end
 
     context 'when geolocation record exists' do
-      subject { delete api_v1_geolocation_path(geolocation.id) }
+      subject { delete api_v1_geolocation_path(geolocation.id), headers: auth_headers, as: :json }
 
       let(:geolocation) { create(:geolocation, :ipstack) }
 
@@ -97,7 +97,7 @@ RSpec.describe 'Geolocations' do
   end
 
   describe 'POST api/v1/geolocations' do
-    subject { post api_v1_geolocations_path, params: }
+    subject { post api_v1_geolocations_path, params:, headers: auth_headers, as: :json }
 
     include_context 'when ipstack request'
 
