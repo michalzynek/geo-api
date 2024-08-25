@@ -32,8 +32,8 @@ module API
       def authenticate_api_key
         api_key = request.headers['Authorization']
         APIKey.find_token!(api_key || '')
-      rescue ActiveRecord::RecordNotFound
-        render_error(ActiveRecord::RecordNotFound, { message: I18n.t('errors.invalid_api_key') }, :unauthorized)
+      rescue ActiveRecord::RecordNotFound => e
+        render_error(e, { message: I18n.t('errors.invalid_api_key') }, :unauthorized)
       end
     end
   end
