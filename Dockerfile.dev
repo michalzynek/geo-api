@@ -21,9 +21,6 @@ WORKDIR $APP_HOME
 
 RUN gem install foreman bundler
 
-# Copy dependencies files and install libraries.
-COPY --link package.json ./
-
 COPY --link Gemfile Gemfile.lock ./
 RUN bundle install -j 4
 

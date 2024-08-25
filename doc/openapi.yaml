@@ -11,12 +11,12 @@ paths:
       tags:
       - API::V1::Geolocation
       parameters:
-      - name: query
+      - name: ip_or_host
         in: query
         required: false
         schema:
           type: string
-        example: 231.28.67.96
+        example: google.com
       responses:
         '200':
           description: returns paginated results with links
@@ -49,6 +49,8 @@ paths:
                               type: string
                             provider:
                               type: string
+                            host:
+                              type: string
                           required:
                           - ip
                           - country
@@ -71,6 +73,7 @@ paths:
                         nullable: true
                       next:
                         type: string
+                        nullable: true
                     required:
                     - first
                     - last
@@ -81,56 +84,61 @@ paths:
                 - links
               example:
                 data:
-                - id: '21'
+                - id: '2866'
                   type: geolocation
                   attributes:
-                    ip: 231.28.67.96
+                    ip: 65.57.113.24
+                    host: google.com
+                    country: Slovakia (Slovak Republic)
+                    city: Homenickmouth
+                    latitude: "-83.82352998393614"
+                    longitude: '148.4892175494342'
+                    provider: IPSTACK
+                - id: '2867'
+                  type: geolocation
+                  attributes:
+                    ip: 54.190.128.218
+                    host: google.com
+                    country: United States Minor Outlying Islands
+                    city: Cheyenneburgh
+                    latitude: '41.94736681298985'
+                    longitude: '173.3978671038218'
+                    provider: IPSTACK
+                - id: '2868'
+                  type: geolocation
+                  attributes:
+                    ip: 100.249.233.110
+                    host: google.com
+                    country: Christmas Island
+                    city: Bobbychester
+                    latitude: "-37.69072113472811"
+                    longitude: "-144.1909128364867"
+                    provider: IPSTACK
+                - id: '2869'
+                  type: geolocation
+                  attributes:
+                    ip: 185.116.213.115
+                    host: google.com
                     country: El Salvador
-                    city: Arlaville
-                    latitude: "-15.21975770895643"
-                    longitude: '63.13580786672378'
+                    city: Lake Yong
+                    latitude: "-83.20119308750726"
+                    longitude: "-32.94703349723451"
                     provider: IPSTACK
-                - id: '22'
+                - id: '2870'
                   type: geolocation
                   attributes:
-                    ip: 231.28.67.96
-                    country: Malawi
-                    city: Port Jaime
-                    latitude: '51.76247304797252'
-                    longitude: "-31.0717696455967"
-                    provider: IPSTACK
-                - id: '23'
-                  type: geolocation
-                  attributes:
-                    ip: 231.28.67.96
-                    country: Jersey
-                    city: West Berenicetown
-                    latitude: '59.99240907435043'
-                    longitude: "-77.99791669884813"
-                    provider: IPSTACK
-                - id: '24'
-                  type: geolocation
-                  attributes:
-                    ip: 231.28.67.96
-                    country: Mauritania
-                    city: New Bill
-                    latitude: '11.86838187625267'
-                    longitude: "-114.4397432042485"
-                    provider: IPSTACK
-                - id: '25'
-                  type: geolocation
-                  attributes:
-                    ip: 231.28.67.96
-                    country: New Caledonia
-                    city: Lake Leonie
-                    latitude: '9.027420424529282'
-                    longitude: "-29.49924303724734"
+                    ip: 163.104.124.60
+                    host: google.com
+                    country: Burkina Faso
+                    city: Bayermouth
+                    latitude: "-13.70264294337002"
+                    longitude: "-97.02559565144016"
                     provider: IPSTACK
                 links:
-                  first: "/api/v1/geolocations?query=231.28.67.96&page%5Bpage%5D=1&page%5Blimit%5D=5"
-                  last: "/api/v1/geolocations?query=231.28.67.96&page%5Bpage%5D=2&page%5Blimit%5D=5"
-                  prev: 
-                  next: "/api/v1/geolocations?query=231.28.67.96&page%5Bpage%5D=2&page%5Blimit%5D=5"
+                  first: "/api/v1/geolocations?ip_or_host=google.com&page%5Bpage%5D=1&page%5Blimit%5D=5"
+                  last: "/api/v1/geolocations?ip_or_host=google.com&page%5Bpage%5D=2&page%5Blimit%5D=5"
+                  prev:
+                  next: "/api/v1/geolocations?ip_or_host=google.com&page%5Bpage%5D=2&page%5Blimit%5D=5"
         '400':
           description: returns 400 bad request
           content:
@@ -141,12 +149,17 @@ paths:
                   errors:
                     type: array
                     items:
-                      type: string
+                      type: object
+                      properties:
+                        message:
+                          type: string
+                      required:
+                      - message
                 required:
                 - errors
               example:
                 errors:
-                - Query parameter is required (should be IP or Host)
+                - message: Query parameter is required (should be IP or Host)
     post:
       summary: create
       tags:
@@ -181,6 +194,9 @@ paths:
                             type: string
                           provider:
                             nullable: true
+                            type: string
+                          host:
+                            type: string
                         required:
                         - ip
                         - country
@@ -196,15 +212,16 @@ paths:
                 - data
               example:
                 data:
-                  id: '32'
+                  id: '2844'
                   type: geolocation
                   attributes:
-                    ip: 80.104.110.90
-                    country: Poland
-                    city: Pollichburgh
-                    latitude: '22.27435572213743'
-                    longitude: '134.48079282443842'
-                    provider: 
+                    ip: 1.190.139.201
+                    country: United States
+                    city: Chicago
+                    latitude: '10.0'
+                    longitude: '11.1'
+                    provider: IPSTACK
+                    host: 1.190.139.201
         '400':
           description: returns unprocessable entity
           content:
@@ -221,6 +238,22 @@ paths:
                           type: array
                           items:
                             type: string
+                        country:
+                          type: array
+                          items:
+                            type: string
+                        city:
+                          type: array
+                          items:
+                            type: string
+                        latitude:
+                          type: array
+                          items:
+                            type: string
+                        longitude:
+                          type: array
+                          items:
+                            type: string
                       required:
                       - ip
                 required:
@@ -229,6 +262,14 @@ paths:
                 errors:
                 - ip:
                   - must be a valid IPv4 or IPv6 address
+                  country:
+                  - can't be blank
+                  city:
+                  - can't be blank
+                  latitude:
+                  - can't be blank
+                  longitude:
+                  - can't be blank
       requestBody:
         content:
           application/x-www-form-urlencoded:
@@ -248,12 +289,8 @@ paths:
                       type: string
                     longitude:
                       type: string
-                  required:
-                  - ip
-                  - country
-                  - city
-                  - latitude
-                  - longitude
+                    ip_or_host:
+                      type: string
               required:
               - geolocation
             example:
@@ -263,6 +300,7 @@ paths:
                 city: Pollichburgh
                 latitude: '22.27435572213743'
                 longitude: '134.48079282443842'
+                ip_or_host: 1.190.139.201
   "/api/v1/geolocations/{id}":
     delete:
       summary: destroy
@@ -273,8 +311,8 @@ paths:
         in: path
         required: true
         schema:
-          type: string
-        example: dummy
+          type: integer
+        example: 2886
       requestBody:
         content:
           application/x-www-form-urlencoded:
@@ -315,8 +353,8 @@ paths:
         in: path
         required: true
         schema:
-          type: string
-        example: dummy
+          type: integer
+        example: 2845
       responses:
         '200':
           description: returns successfully single resource
@@ -347,6 +385,8 @@ paths:
                             type: string
                           provider:
                             type: string
+                          host:
+                            type: string
                         required:
                         - ip
                         - country
@@ -362,15 +402,16 @@ paths:
                 - data
               example:
                 data:
-                  id: '31'
+                  id: '2845'
                   type: geolocation
                   attributes:
-                    ip: 254.97.70.161
-                    country: Germany
-                    city: Lake Kathaleen
-                    latitude: "-56.92788412635468"
-                    longitude: '99.16909617861234'
+                    ip: 129.97.171.140
+                    country: Senegal
+                    city: Wildermanburgh
+                    latitude: '63.06380957762468'
+                    longitude: "-15.63706482548337"
                     provider: IPSTACK
+                    host: http://waters.test/venessa
         '404':
           description: returns 404 not found
           content:
