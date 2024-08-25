@@ -7,7 +7,7 @@ module API
       before_action :set_geolocation, only: %i[show destroy]
 
       def index
-        query = Geolocation.where('ip = ? OR host = ?', params[:query], params[:query])
+        query = Geolocation.where(host: params[:ip_or_host])
         pagy, records = pagy(query, jsonapi: true)
         serialized_records = API::V1::GeolocationSerializer.new(records).serializable_hash
 
@@ -21,7 +21,7 @@ module API
       end
 
       def create
-        geolocation = GeolocationCreatorService.new(ip_or_host).call
+        geolocation = GeolocationCreatorService.new(geolocation_params[:ip_or_host]).call
 
         render json: API::V1::GeolocationSerializer.new(geolocation).serializable_hash,
                status: :created
@@ -42,7 +42,7 @@ module API
       private
 
       def check_ip_or_host_query
-        return if params[:query].present?
+        return if params[:ip_or_host].present?
 
         render_error(
           ActionController::ParameterMissing,
@@ -55,16 +55,8 @@ module API
         @geolocation = Geolocation.find(params[:id])
       end
 
-      def ip_or_host
-        return geolocation_params[:host] if geolocation_params[:host].present?
-
-        geolocation_params[:ip]
-      end
-
       def geolocation_params
-        params.require(:geolocation).permit(
-          :ip, :host
-        )
+        params.require(:geolocation).permit(:ip_or_host)
       end
     end
   end

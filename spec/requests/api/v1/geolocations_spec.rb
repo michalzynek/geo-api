@@ -7,13 +7,14 @@ RSpec.describe 'Geolocations' do
     subject { get api_v1_geolocations_path, params: }
 
     before do
-      create_list(:geolocation, 10, :ipstack, ip: Faker::Internet.ip_v4_address)
-      subject
+      create_list(:geolocation, 10, :ipstack)
     end
 
     context 'when search params are present' do
       let(:geolocation) { Geolocation.first }
-      let(:params) { { query: geolocation.ip } }
+      let(:params) { { ip_or_host: geolocation.host } }
+
+      before { subject }
 
       it 'returns successfully list of resources' do
         expect(response).to have_http_status(:success)
@@ -24,6 +25,8 @@ RSpec.describe 'Geolocations' do
     context 'when no search param is given' do
       let(:params) { nil }
 
+      before { subject }
+
       it 'returns 400 bad request' do
         expect(response).to have_http_status(:bad_request)
         expect(json[:errors][0][:message]).to include('Query parameter is required (should be IP or Host)')
@@ -31,7 +34,12 @@ RSpec.describe 'Geolocations' do
     end
 
     describe 'paginated response' do
-      let(:params) { { query: Geolocation.first.ip } }
+      let(:params) { { ip_or_host: 'google.com' } }
+
+      before do
+        create_list(:geolocation, 10, :ipstack, host: 'google.com')
+        subject
+      end
 
       it 'returns paginated results with links' do
         expect(response).to have_http_status(:success)
@@ -94,7 +102,7 @@ RSpec.describe 'Geolocations' do
     include_context 'when ipstack request'
 
     context 'when valid payload with IP' do
-      let(:params) { { geolocation: { ip: ip_or_host } } }
+      let(:params) { { geolocation: { ip_or_host: } } }
       let(:ip_or_host) { Faker::Internet.ip_v4_address }
       let(:response_body) { json[:data][:attributes] }
       let(:geolocation) { Geolocation.last }
@@ -113,17 +121,17 @@ RSpec.describe 'Geolocations' do
       it 'returns success and creates new geolocation' do
         expect(response).to have_http_status(:created)
 
-        expect(response_body[:ip]).to eq(params[:geolocation][:ip])
-        expect(response_body[:host]).to eq(params[:geolocation][:ip])
+        expect(response_body[:ip]).to eq(params[:geolocation][:ip_or_host])
+        expect(response_body[:host]).to eq(params[:geolocation][:ip_or_host])
 
-        expect(geolocation.ip).to eq(params[:geolocation][:ip])
-        expect(geolocation.host).to eq(params[:geolocation][:ip])
+        expect(geolocation.ip).to eq(params[:geolocation][:ip_or_host])
+        expect(geolocation.host).to eq(params[:geolocation][:ip_or_host])
       end
     end
 
     context 'when valid payload with host' do
       let(:ip_or_host) { 'google.com' }
-      let(:params) { { geolocation: { host: ip_or_host } } }
+      let(:params) { { geolocation: { ip_or_host: } } }
       let(:ip) { Faker::Internet.ip_v4_address }
       let(:geolocation) { Geolocation.last }
       let(:ipstack_response) do
@@ -141,16 +149,16 @@ RSpec.describe 'Geolocations' do
       it 'returns success and creates new geolocation' do
         expect(response).to have_http_status(:created)
 
-        expect(json[:data][:attributes][:host]).to eq(params[:geolocation][:host])
+        expect(json[:data][:attributes][:host]).to eq(params[:geolocation][:ip_or_host])
         expect(json[:data][:attributes][:ip]).to eq(ip)
-        expect(geolocation.host).to eq(params[:geolocation][:host])
+        expect(geolocation.host).to eq(params[:geolocation][:ip_or_host])
         expect(geolocation.ip).to eq(ip)
       end
     end
 
     context 'when invalid payload' do
       let(:ip_or_host) { 'dummyIP' }
-      let(:params) { { geolocation: { host: ip_or_host } } }
+      let(:params) { { geolocation: { ip_or_host: } } }
       let(:ipstack_response) do
         {
           ip: ip_or_host,
