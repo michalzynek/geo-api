@@ -16,6 +16,7 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   REPO: ${{ github.repository }}
   PARALLEL_TEST_FIRST_IS_1: true
+  IPSTACK_ACCESS_KEY: ipstack_api_key
 
 jobs:
   linters:
