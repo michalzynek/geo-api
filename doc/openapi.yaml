@@ -4,30 +4,15 @@ info:
   title: geo-api
   version: 1.0.0
 servers: []
-components:
-  securitySchemes:
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: Authorization
-security:
-- ApiKeyAuth: []
 paths:
   "/api/v1/geolocations":
     get:
       summary: index
       tags:
       - API::V1::Geolocation
-      parameters:
-      - name: ip_or_host
-        in: query
-        required: false
-        schema:
-          type: string
-        example: google.com
       responses:
         '200':
-          description: returns paginated results with links
+          description: returns successfully list of resources
           content:
             application/json:
               schema:
@@ -81,8 +66,8 @@ paths:
                       prev:
                         nullable: true
                       next:
-                        nullable: true
                         type: string
+                        nullable: true
                     required:
                     - first
                     - last
@@ -93,61 +78,21 @@ paths:
                 - links
               example:
                 data:
-                - id: '994'
+                - id: '36'
                   type: geolocation
                   attributes:
-                    ip: 28.91.254.135
-                    host: google.com
-                    country: Zambia
-                    city: Tonibury
-                    latitude: "-38.64738555986241"
-                    longitude: '140.991618230577'
-                    provider: IPSTACK
-                - id: '995'
-                  type: geolocation
-                  attributes:
-                    ip: 114.139.8.21
-                    host: google.com
-                    country: Nigeria
-                    city: Elanafort
-                    latitude: "-66.46296516929172"
-                    longitude: "-47.08002537325848"
-                    provider: IPSTACK
-                - id: '996'
-                  type: geolocation
-                  attributes:
-                    ip: 149.183.169.101
-                    host: google.com
-                    country: Cocos (Keeling) Islands
-                    city: Lake Caterinaton
-                    latitude: '69.23587116135542'
-                    longitude: '58.12277384115543'
-                    provider: IPSTACK
-                - id: '997'
-                  type: geolocation
-                  attributes:
-                    ip: 83.220.229.15
-                    host: google.com
-                    country: United Arab Emirates
-                    city: South Doyleside
-                    latitude: '69.69859367345765'
-                    longitude: '93.87812222881797'
-                    provider: IPSTACK
-                - id: '998'
-                  type: geolocation
-                  attributes:
-                    ip: 63.142.230.216
-                    host: google.com
-                    country: Serbia
-                    city: Yolandabury
-                    latitude: "-46.84629508766217"
-                    longitude: "-91.5178692114715"
+                    ip: 138.135.130.37
+                    host: http://klein-beier.example/lynn
+                    country: Benin
+                    city: East Donnieville
+                    latitude: '89.64857405770934'
+                    longitude: "-123.9160390086119"
                     provider: IPSTACK
                 links:
-                  first: "/api/v1/geolocations?ip_or_host=google.com&page%5Bpage%5D=1&page%5Blimit%5D=5"
-                  last: "/api/v1/geolocations?ip_or_host=google.com&page%5Bpage%5D=2&page%5Blimit%5D=5"
-                  prev:
-                  next: "/api/v1/geolocations?ip_or_host=google.com&page%5Bpage%5D=2&page%5Blimit%5D=5"
+                  first: "/api/v1/geolocations?ip_or_host=http%3A%2F%2Fklein-beier.example%2Flynn&page%5Bpage%5D=1&page%5Blimit%5D=5"
+                  last: "/api/v1/geolocations?ip_or_host=http%3A%2F%2Fklein-beier.example%2Flynn&page%5Bpage%5D=1&page%5Blimit%5D=5"
+                  prev: 
+                  next: 
         '400':
           description: returns 400 bad request
           content:
@@ -169,10 +114,35 @@ paths:
               example:
                 errors:
                 - message: Query parameter is required (should be IP or Host)
+      parameters:
+      - name: ip_or_host
+        in: query
+        required: false
+        schema:
+          type: string
+        example: http://klein-beier.example/lynn
     post:
       summary: create
       tags:
       - API::V1::Geolocation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                geolocation:
+                  type: object
+                  properties:
+                    ip_or_host:
+                      type: string
+                  required:
+                  - ip_or_host
+              required:
+              - geolocation
+            example:
+              geolocation:
+                ip_or_host: 104.169.24.47
       responses:
         '201':
           description: returns success and creates new geolocation
@@ -221,11 +191,11 @@ paths:
                 - data
               example:
                 data:
-                  id: '962'
+                  id: '5'
                   type: geolocation
                   attributes:
-                    ip: 218.149.132.112
-                    host: google.com
+                    ip: 104.169.24.47
+                    host: 104.169.24.47
                     country: United States
                     city: Chicago
                     latitude: '10.0'
@@ -283,50 +253,6 @@ paths:
                   - can't be blank
                   longitude:
                   - can't be blank
-        '422':
-          description: returns successfully list of resources
-          content:
-            application/json:
-              schema:
-                type: object
-                properties: {}
-                required:
-                - errors
-              example: {}
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                geolocation:
-                  type: object
-                  properties:
-                    ip_or_host:
-                      type: string
-                  required:
-                  - ip_or_host
-              required:
-              - geolocation
-            example:
-              geolocation:
-                ip_or_host: 136.100.184.202
-          application/json:
-            schema:
-              type: object
-              properties:
-                geolocation:
-                  type: object
-                  properties:
-                    ip_or_host:
-                      type: string
-                  required:
-                  - ip_or_host
-              required:
-              - geolocation
-            example:
-              geolocation:
-                ip_or_host: google.com
   "/api/v1/geolocations/{id}":
     delete:
       summary: destroy
@@ -338,7 +264,7 @@ paths:
         required: true
         schema:
           type: integer
-        example: 1004
+        example: 3
       responses:
         '204':
           description: returns no content and destroys geolocation
@@ -365,11 +291,6 @@ paths:
                 - message: Resource not found
       requestBody:
         content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties: {}
-            example: {}
           application/json:
             schema:
               type: object
@@ -434,15 +355,15 @@ paths:
                 - data
               example:
                 data:
-                  id: '963'
+                  id: '2'
                   type: geolocation
                   attributes:
-                    ip: 171.2.197.145
-                    host: http://barton.test/jenniffer
-                    country: Canada
-                    city: North Renaldomouth
-                    latitude: "-11.71209762277966"
-                    longitude: "-19.50387504887032"
+                    ip: 86.228.210.35
+                    host: http://baumbach.test/jana
+                    country: Niger
+                    city: East Rupert
+                    latitude: '74.42916863267106'
+                    longitude: '141.699895342314'
                     provider: IPSTACK
         '404':
           description: returns 404 not found
