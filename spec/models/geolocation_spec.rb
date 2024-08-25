@@ -39,19 +39,19 @@ RSpec.describe Geolocation do
       end
     end
 
-    context 'when IP and host are missing' do
-      subject { build(:geolocation, :ipstack, ip: nil, host: nil) }
+    context 'when IP is missing' do
+      subject { build(:geolocation, :ipstack, ip: nil) }
 
       it 'is not a valid record' do
         expect(subject).not_to be_valid
       end
     end
 
-    context 'when IP or host is present' do
+    context 'when host is missing' do
       subject { build(:geolocation, :ipstack, host: nil) }
 
-      it 'passes validation' do
-        expect(subject).to be_valid
+      it 'is not a valid record' do
+        expect(subject).not_to be_valid
       end
     end
 

@@ -30,7 +30,8 @@
 en:
   errors:
     resource_not_found: 'Resource not found'
-    request_missing_parameters: 'Request is missing required parameters' 
+    request_missing_parameters: 'Request is missing required parameters'
+    service_failed_data_fetch: 'The geolocation service failed to fetch the data, try again.'
   activerecord:
     errors:
       models:
