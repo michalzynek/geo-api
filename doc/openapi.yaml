@@ -4,6 +4,14 @@ info:
   title: geo-api
   version: 1.0.0
 servers: []
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+security:
+- ApiKeyAuth: []
 paths:
   "/api/v1/geolocations":
     get:
@@ -85,60 +93,60 @@ paths:
                 - links
               example:
                 data:
-                - id: '36'
+                - id: '994'
                   type: geolocation
                   attributes:
-                    ip: 215.52.7.47
+                    ip: 28.91.254.135
                     host: google.com
-                    country: Wallis and Futuna
-                    city: Lindgrenview
-                    latitude: "-56.44706362633809"
-                    longitude: "-29.11148914243307"
+                    country: Zambia
+                    city: Tonibury
+                    latitude: "-38.64738555986241"
+                    longitude: '140.991618230577'
                     provider: IPSTACK
-                - id: '37'
+                - id: '995'
                   type: geolocation
                   attributes:
-                    ip: 138.46.199.246
+                    ip: 114.139.8.21
                     host: google.com
-                    country: Christmas Island
-                    city: McDermottton
-                    latitude: '85.26594833312745'
-                    longitude: '19.6262745488911'
+                    country: Nigeria
+                    city: Elanafort
+                    latitude: "-66.46296516929172"
+                    longitude: "-47.08002537325848"
                     provider: IPSTACK
-                - id: '38'
+                - id: '996'
                   type: geolocation
                   attributes:
-                    ip: 173.126.186.143
+                    ip: 149.183.169.101
                     host: google.com
-                    country: Somalia
-                    city: Walkerport
-                    latitude: "-66.69241660757729"
-                    longitude: '90.72383098836912'
+                    country: Cocos (Keeling) Islands
+                    city: Lake Caterinaton
+                    latitude: '69.23587116135542'
+                    longitude: '58.12277384115543'
                     provider: IPSTACK
-                - id: '39'
+                - id: '997'
                   type: geolocation
                   attributes:
-                    ip: 166.246.201.99
+                    ip: 83.220.229.15
                     host: google.com
-                    country: Nepal
-                    city: Lake Quentinhaven
-                    latitude: "-3.381330154350792"
-                    longitude: "-23.03733373974967"
+                    country: United Arab Emirates
+                    city: South Doyleside
+                    latitude: '69.69859367345765'
+                    longitude: '93.87812222881797'
                     provider: IPSTACK
-                - id: '40'
+                - id: '998'
                   type: geolocation
                   attributes:
-                    ip: 88.80.54.251
+                    ip: 63.142.230.216
                     host: google.com
-                    country: Guinea
-                    city: Port Selma
-                    latitude: '33.87166801917127'
-                    longitude: "-29.03638076449019"
+                    country: Serbia
+                    city: Yolandabury
+                    latitude: "-46.84629508766217"
+                    longitude: "-91.5178692114715"
                     provider: IPSTACK
                 links:
                   first: "/api/v1/geolocations?ip_or_host=google.com&page%5Bpage%5D=1&page%5Blimit%5D=5"
                   last: "/api/v1/geolocations?ip_or_host=google.com&page%5Bpage%5D=2&page%5Blimit%5D=5"
-                  prev: 
+                  prev:
                   next: "/api/v1/geolocations?ip_or_host=google.com&page%5Bpage%5D=2&page%5Blimit%5D=5"
         '400':
           description: returns 400 bad request
@@ -213,11 +221,11 @@ paths:
                 - data
               example:
                 data:
-                  id: '5'
+                  id: '962'
                   type: geolocation
                   attributes:
-                    ip: 24.1.170.143
-                    host: 24.1.170.143
+                    ip: 218.149.132.112
+                    host: google.com
                     country: United States
                     city: Chicago
                     latitude: '10.0'
@@ -275,6 +283,16 @@ paths:
                   - can't be blank
                   longitude:
                   - can't be blank
+        '422':
+          description: returns successfully list of resources
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+                required:
+                - errors
+              example: {}
       requestBody:
         content:
           application/x-www-form-urlencoded:
@@ -292,7 +310,23 @@ paths:
               - geolocation
             example:
               geolocation:
-                ip_or_host: 24.1.170.143
+                ip_or_host: 136.100.184.202
+          application/json:
+            schema:
+              type: object
+              properties:
+                geolocation:
+                  type: object
+                  properties:
+                    ip_or_host:
+                      type: string
+                  required:
+                  - ip_or_host
+              required:
+              - geolocation
+            example:
+              geolocation:
+                ip_or_host: google.com
   "/api/v1/geolocations/{id}":
     delete:
       summary: destroy
@@ -304,7 +338,7 @@ paths:
         required: true
         schema:
           type: integer
-        example: 2
+        example: 1004
       responses:
         '204':
           description: returns no content and destroys geolocation
@@ -332,6 +366,11 @@ paths:
       requestBody:
         content:
           application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties: {}
+            example: {}
+          application/json:
             schema:
               type: object
               properties: {}
@@ -395,15 +434,15 @@ paths:
                 - data
               example:
                 data:
-                  id: '3'
+                  id: '963'
                   type: geolocation
                   attributes:
-                    ip: 121.37.74.163
-                    host: http://douglas.test/erica
-                    country: Greenland
-                    city: Lake Jeannie
-                    latitude: '16.31271121956396'
-                    longitude: "-82.9682522936489"
+                    ip: 171.2.197.145
+                    host: http://barton.test/jenniffer
+                    country: Canada
+                    city: North Renaldomouth
+                    latitude: "-11.71209762277966"
+                    longitude: "-19.50387504887032"
                     provider: IPSTACK
         '404':
           description: returns 404 not found

@@ -27,17 +27,17 @@ Docker: For containerized development and deployment.
 1. Clone repository and `cd` into the project directory
 2. Install gems
 ```ruby
-bundle install
+bin/bundle install
 ```
 3. Config environmental variables - example envs are in `.env.sample` file. `IPSTACK_ACCESS_KEY` is required to fetch geolocation from external provider
 4. Setup PostgreSQL envs and run
 ```
-bundle exec rails db:prepare
+bin/rails db:prepare
 ```
 5. Verify the setup by running code analysis and tests
 ```
-bundle exec rails code:analysis
-bundle exec rspec
+bin/rails rails code:analysis
+bin/rails rspec
 ```
 6. Start the application server on development
 ```
@@ -79,7 +79,7 @@ The documentation uses `SwaggerUI` and is available under `/api-docs` path.
 
 ## Code quality
 
-`bundle exec rails code:analysis`
+`bin/rails code:analysis`
 
 - [Rubocop](https://github.com/bbatsov/rubocop/blob/master/config/default.yml) Edit `.rubocop.yml`
 - [Rails Best Practices](https://github.com/flyerhzm/rails_best_practices#custom-configuration) Edit `config/rails_best_practices.yml`
@@ -88,3 +88,13 @@ The documentation uses `SwaggerUI` and is available under `/api-docs` path.
 ## Parallel tests
 
 All of the tests ran in CI are parallelized.
+
+## Token generation
+
+Repository implements API tokens for secure connections. The token is available **ONLY** right after creating it. 
+
+To create a token for local development, run:
+
+```
+bin/rails token:generate
+```
