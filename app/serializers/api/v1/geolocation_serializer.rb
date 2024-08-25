@@ -5,7 +5,7 @@ module API
     class GeolocationSerializer
       include JSONAPI::Serializer
 
-      attributes :ip, :country, :city, :latitude, :longitude, :provider
+      attributes :ip, :host, :country, :city, :latitude, :longitude, :provider
     end
   end
 end

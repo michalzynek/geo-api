@@ -20,8 +20,8 @@
 #  index_geolocations_on_ip_and_host  (ip,host) UNIQUE
 #
 class Geolocation < ApplicationRecord
-  validates :ip, format: { with: Resolv::IPv4::Regex, message: :must_be_valid_format }
-  validates :host, format: { with: URI::DEFAULT_PARSER.make_regexp, allow_blank: true, message: :must_be_valid_format }
+  validates :ip, presence: true, format: { with: Resolv::IPv4::Regex, message: :must_be_valid_format }
+  validates :host, presence: true
   validates :country, :city, :latitude, :longitude, presence: true
   validates :ip, uniqueness: { scope: :host }
   validate :ip_or_host_presence

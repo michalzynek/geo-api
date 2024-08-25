@@ -21,10 +21,16 @@ module API
       end
 
       def create
-        geolocation = Geolocation.new(geolocation_params)
-        geolocation.save!
+        geolocation = GeolocationCreatorService.new(ip_or_host).call
 
-        render json: API::V1::GeolocationSerializer.new(geolocation).serializable_hash, status: :created
+        render json: API::V1::GeolocationSerializer.new(geolocation).serializable_hash,
+               status: :created
+      rescue GeolocationProvider::BaseProvider::ServiceConnectionError => e
+        render_error(
+          e,
+          { message: I18n.t('errors.service_failed_data_fetch') },
+          :unprocessable_entity
+        )
       end
 
       def destroy
@@ -40,7 +46,7 @@ module API
 
         render_error(
           ActionController::ParameterMissing,
-          ['Query parameter is required (should be IP or Host)'],
+          { message: 'Query parameter is required (should be IP or Host)' },
           :bad_request
         )
       end
@@ -49,9 +55,15 @@ module API
         @geolocation = Geolocation.find(params[:id])
       end
 
+      def ip_or_host
+        return geolocation_params[:host] if geolocation_params[:host].present?
+
+        geolocation_params[:ip]
+      end
+
       def geolocation_params
         params.require(:geolocation).permit(
-          :ip, :host, :latitude, :longitude, :city, :country
+          :ip, :host
         )
       end
     end
