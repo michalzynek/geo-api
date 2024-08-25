@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Geolocations' do
-  describe 'GET api/v1/geolocations' do
+  describe 'GET api/v1/geolocations', openapi: { security: [{ 'Authorization' => [] }] } do
     subject { get api_v1_geolocations_path, params:, headers: auth_headers }
 
     before do
@@ -48,7 +48,7 @@ RSpec.describe 'Geolocations' do
     end
   end
 
-  describe 'GET api/v1/geolocations/:id' do
+  describe 'GET api/v1/geolocations/:id', openapi: { security: [{ 'Authorization' => [] }] } do
     before { subject }
 
     context 'when geolocation record does not exist' do
@@ -73,7 +73,7 @@ RSpec.describe 'Geolocations' do
     end
   end
 
-  describe 'DELETE api/v1/geolocations/:id' do
+  describe 'DELETE api/v1/geolocations/:id', openapi: { security: [{ 'Authorization' => [] }] } do
     before { subject }
 
     context 'when geolocation record does not exist' do
@@ -96,7 +96,7 @@ RSpec.describe 'Geolocations' do
     end
   end
 
-  describe 'POST api/v1/geolocations' do
+  describe 'POST api/v1/geolocations', openapi: { security: [{ 'Authorization' => [] }] } do
     subject { post api_v1_geolocations_path, params:, headers: auth_headers, as: :json }
 
     include_context 'when ipstack request'

@@ -1,8 +1,8 @@
 ---
 openapi: 3.0.3
 info:
-  title: geo-api
-  version: 1.0.0
+  title: Geolocation API
+  version: 1.2.1
 servers: []
 paths:
   "/api/v1/geolocations":
@@ -12,7 +12,7 @@ paths:
       - API::V1::Geolocation
       responses:
         '200':
-          description: returns successfully list of resources
+          description: returns paginated results with links
           content:
             application/json:
               schema:
@@ -78,21 +78,61 @@ paths:
                 - links
               example:
                 data:
-                - id: '36'
+                - id: '1536'
                   type: geolocation
                   attributes:
-                    ip: 138.135.130.37
-                    host: http://klein-beier.example/lynn
-                    country: Benin
-                    city: East Donnieville
-                    latitude: '89.64857405770934'
-                    longitude: "-123.9160390086119"
+                    ip: 241.211.193.85
+                    host: google.com
+                    country: Lithuania
+                    city: Yundtfurt
+                    latitude: '86.69052927057632'
+                    longitude: "-128.2052896025566"
+                    provider: IPSTACK
+                - id: '1537'
+                  type: geolocation
+                  attributes:
+                    ip: 228.27.199.97
+                    host: google.com
+                    country: Latvia
+                    city: Lake Shelia
+                    latitude: '78.60067424027793'
+                    longitude: '103.658934637387'
+                    provider: IPSTACK
+                - id: '1538'
+                  type: geolocation
+                  attributes:
+                    ip: 123.209.215.210
+                    host: google.com
+                    country: Guatemala
+                    city: Reyesshire
+                    latitude: "-18.4907317856359"
+                    longitude: '20.77558341203482'
+                    provider: IPSTACK
+                - id: '1539'
+                  type: geolocation
+                  attributes:
+                    ip: 230.100.153.80
+                    host: google.com
+                    country: Zimbabwe
+                    city: Sonnytown
+                    latitude: '88.97612565018159'
+                    longitude: "-137.1695118629437"
+                    provider: IPSTACK
+                - id: '1540'
+                  type: geolocation
+                  attributes:
+                    ip: 247.101.226.175
+                    host: google.com
+                    country: Virgin Islands, British
+                    city: Leannonhaven
+                    latitude: '37.87999145675589'
+                    longitude: '101.7802783799495'
                     provider: IPSTACK
                 links:
-                  first: "/api/v1/geolocations?ip_or_host=http%3A%2F%2Fklein-beier.example%2Flynn&page%5Bpage%5D=1&page%5Blimit%5D=5"
-                  last: "/api/v1/geolocations?ip_or_host=http%3A%2F%2Fklein-beier.example%2Flynn&page%5Bpage%5D=1&page%5Blimit%5D=5"
-                  prev: 
-                  next: 
+                  first: "/api/v1/geolocations?ip_or_host=google.com&page%5Bpage%5D=1&page%5Blimit%5D=5"
+                  last: "/api/v1/geolocations?ip_or_host=google.com&page%5Bpage%5D=2&page%5Blimit%5D=5"
+                  prev:
+                  next: "/api/v1/geolocations?ip_or_host=google.com&page%5Bpage%5D=2&page%5Blimit%5D=5"
         '400':
           description: returns 400 bad request
           content:
@@ -120,7 +160,9 @@ paths:
         required: false
         schema:
           type: string
-        example: http://klein-beier.example/lynn
+        example: google.com
+      security:
+      - Authorization: []
     post:
       summary: create
       tags:
@@ -142,7 +184,7 @@ paths:
               - geolocation
             example:
               geolocation:
-                ip_or_host: 104.169.24.47
+                ip_or_host: google.com
       responses:
         '201':
           description: returns success and creates new geolocation
@@ -191,11 +233,11 @@ paths:
                 - data
               example:
                 data:
-                  id: '5'
+                  id: '1548'
                   type: geolocation
                   attributes:
-                    ip: 104.169.24.47
-                    host: 104.169.24.47
+                    ip: 175.2.112.230
+                    host: google.com
                     country: United States
                     city: Chicago
                     latitude: '10.0'
@@ -253,6 +295,8 @@ paths:
                   - can't be blank
                   longitude:
                   - can't be blank
+      security:
+      - Authorization: []
   "/api/v1/geolocations/{id}":
     delete:
       summary: destroy
@@ -264,7 +308,7 @@ paths:
         required: true
         schema:
           type: integer
-        example: 3
+        example: 1546
       responses:
         '204':
           description: returns no content and destroys geolocation
@@ -296,6 +340,8 @@ paths:
               type: object
               properties: {}
             example: {}
+      security:
+      - Authorization: []
     get:
       summary: show
       tags:
@@ -355,15 +401,15 @@ paths:
                 - data
               example:
                 data:
-                  id: '2'
+                  id: '1505'
                   type: geolocation
                   attributes:
-                    ip: 86.228.210.35
-                    host: http://baumbach.test/jana
-                    country: Niger
-                    city: East Rupert
-                    latitude: '74.42916863267106'
-                    longitude: '141.699895342314'
+                    ip: 63.161.33.94
+                    host: http://pacocha.test/bernardo
+                    country: Sudan
+                    city: Kesslerton
+                    latitude: "-84.71726128166856"
+                    longitude: '13.18728202683232'
                     provider: IPSTACK
         '404':
           description: returns 404 not found
@@ -386,3 +432,13 @@ paths:
               example:
                 errors:
                 - message: Resource not found
+      security:
+      - Authorization: []
+components:
+  securitySchemes:
+    Authorization:
+      description: Authenticate API requests via API Token
+      in: header
+      scheme: apiKey
+      type: apiKey
+      name: Authorization
